@@ -1,4 +1,4 @@
-package com.spectrum.rewards;
+package com.spectrum.rewards.model;
 
 import java.util.Date;
 
@@ -16,12 +16,15 @@ public class Transaction {
 	private Double value;
 	@Field
 	private Date date;
+	@Field
+	private String username;
 	
-	public Transaction(String name, Double value, Date date) {
+	public Transaction(String name, Double value, Date date, String username) {
 		super();
 		this.name = name;
 		this.value = value;
 		this.date = date;
+		this.username = username;
 	}
 	
 	public String getId() {
@@ -48,11 +51,11 @@ public class Transaction {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	@Override
-	public String toString() {
-		return "Transaction [id=" + id + ", name=" + name + ", value=" + value + ", date=" + date + "]";
+	public String getUsername() {
+		return username;
 	}
-	
+	public void setUsername(String username) {
+		this.username = username;
+	}	
 }
 
