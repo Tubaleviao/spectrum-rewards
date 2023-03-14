@@ -24,6 +24,7 @@ const Alert = React.forwardRef(
 
 function App() {
   const [transactions, setTransactions] = useState([]);
+  const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState({});
   const [showMessage, setShowMessage] = useState(false);
@@ -32,8 +33,20 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(baseUrl+"/api/transactions");
-        setTransactions(response.data);
+        const transactionsResponse = await axios.get(baseUrl+"/api/transactions");
+        setTransactions(transactionsResponse.data);
+        const rewardsResponse = await axios.get(baseUrl+"/api/rewards");
+        
+        const rewardMonths = rewardsResponse.data.map(r => {
+          r.months = r.months.map((points,i) => {
+            const date = new Date()
+            date.setMonth(date.getMonth()-(2-i))
+            const month = date.toLocaleString('default', { month: 'long' })
+            return {"month": month, "points": points}
+          })
+          return r
+        })
+        setRewards(rewardMonths)
       } catch (error) {
         setInfo({message: error.message, type: "error"})
         setShowMessage(true)
@@ -46,9 +59,7 @@ function App() {
     fetchData();
   }, []);
 
-  const closeInfo = () => { 
-    setShowMessage(false)
-  }
+  const closeInfo = () => setShowMessage(false)
 
   return (
     <Container maxWidth="lg">
@@ -82,6 +93,37 @@ function App() {
                   <TableCell align="right">{transaction.name}</TableCell>
                   <TableCell align="right"> {transaction.value} </TableCell>
                   <TableCell align="right">{new Date(transaction.date).toLocaleString()}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+      <Typography variant="h4" align="center" gutterBottom>
+        <Receipt  fontSize="large" /> All Rewards
+      </Typography>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Customer</TableCell>
+                <TableCell align="right">Points per Month</TableCell>
+                <TableCell align="right">Total Points in 3 Months</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rewards.map((rewards, i) => (
+                <TableRow key={`reward-${i}`}>
+                  <TableCell component="th" scope="row">
+                  {rewards.customer.name}
+                  </TableCell>
+                  <TableCell align="right">
+                    {rewards.months.map(m => `${m.month}: ${m.points}`).join("; ")}
+                  </TableCell>
+                  <TableCell align="right"> {rewards.months.reduce((acc,obj) => acc+obj.points, 0)} </TableCell>
                 </TableRow>
               ))}
             </TableBody>
