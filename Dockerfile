@@ -5,7 +5,7 @@ RUN mkdir build
 RUN git clone https://github.com/Tubaleviao/spectrum-rewards.git build
 WORKDIR build/src/main/resources/frontend
 RUN rm -R ../static/* && npm install && npm run build
-RUN cd ../ && rm -R frontend
+RUN mv build/* ../static/ && cd ../ && rm -R frontend
 
 # Build application into the .jar file
 
