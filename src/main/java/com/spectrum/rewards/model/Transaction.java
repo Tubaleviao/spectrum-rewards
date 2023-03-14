@@ -17,14 +17,14 @@ public class Transaction {
 	@Field
 	private Date date;
 	@Field
-	private String username;
+	private Customer customer;
 	
-	public Transaction(String name, Double value, Date date, String username) {
+	public Transaction(String name, Double value, Date date, Customer customer) {
 		super();
 		this.name = name;
 		this.value = value;
 		this.date = date;
-		this.username = username;
+		this.customer = customer;
 	}
 	
 	public String getId() {
@@ -51,11 +51,11 @@ public class Transaction {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getUsername() {
-		return username;
+	public Customer getCustomer() {
+		return customer;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}	
 }
 

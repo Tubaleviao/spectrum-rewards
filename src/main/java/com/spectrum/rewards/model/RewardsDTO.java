@@ -3,19 +3,19 @@ package com.spectrum.rewards.model;
 import java.util.List;
 
 public class RewardsDTO {
-	private String username;
+	private Customer customer;
 	private List<Integer> months;
 	
-	public RewardsDTO(String username, List<Integer> months) {
+	public RewardsDTO(Customer customer, List<Integer> months) {
 		super();
-		this.username = username;
+		this.customer = customer;
 		this.months = months;
 	}
-	public String getUsername() {
-		return username;
+	public Customer getCustomer() {
+		return customer;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	public List<Integer> getMonths() {
 		return months;

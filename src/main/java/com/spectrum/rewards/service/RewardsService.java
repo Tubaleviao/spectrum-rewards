@@ -13,8 +13,10 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spectrum.rewards.model.Customer;
 import com.spectrum.rewards.model.RewardsDTO;
 import com.spectrum.rewards.model.Transaction;
+import com.spectrum.rewards.repository.CustomerRepository;
 import com.spectrum.rewards.repository.TransactionRepository;
 
 @Service
@@ -22,15 +24,25 @@ public class RewardsService {
 	
 	@Autowired
 	private TransactionRepository transactionRepo;
+	@Autowired
+	private CustomerRepository customerRepo;
+	
+	public List<RewardsDTO> getAllRewards(){
+		List<Customer> allCustomers = customerRepo.findAll();
+		return allCustomers.stream().map(c -> getRewards(c.getId()))
+				.collect(Collectors.toList());
+	}
 	
 	// Result: { username, rewards: { m1, m2, m3 } } 
-	public RewardsDTO getRewards(String username){
-		List<Transaction> userTransactions = transactionRepo.findByUsername(username);
+	public RewardsDTO getRewards(Integer userId){
+		Customer customer = customerRepo.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+		List<Transaction> userTransactions = transactionRepo.findByCustomer(customer);
 		Date past3Months = getFirstDayOfXMonthsBehind(2);
 		List<Transaction> filteredTransactions = userTransactions.stream()
 				.filter(t -> t.getDate().after(past3Months) || t.getDate().equals(past3Months))
 				.collect(Collectors.toList());
-		return new RewardsDTO(username, calculatePoints(filteredTransactions));
+		return new RewardsDTO(customer, calculatePoints(filteredTransactions));
 	}
 	
 	public List<Integer> calculatePoints(List<Transaction> transactions){
