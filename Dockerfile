@@ -4,7 +4,7 @@ FROM node AS rewards-build
 RUN mkdir build
 RUN git clone https://github.com/Tubaleviao/spectrum-rewards.git build
 WORKDIR build/src/main/resources/frontend
-RUN npm install && npm run build
+RUN rm -R ../static/* && npm install && npm run build
 RUN cd ../ && rm -R frontend
 
 # Build application into the .jar file
