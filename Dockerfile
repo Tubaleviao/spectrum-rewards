@@ -1,6 +1,6 @@
 # Build front-end and send it to Springboot's static folder
 
-FROM node AS rewards-build
+FROM node:16-alpine AS rewards-build
 RUN mkdir build
 RUN git clone https://github.com/Tubaleviao/spectrum-rewards.git build
 WORKDIR build/src/main/resources/frontend

@@ -26,7 +26,7 @@ public class TransactionService {
 	public List<Transaction> getTransactions() {
 		
 		// Inserting example data
-		transactionRepo.deleteAll();
+		//transactionRepo.deleteAll();
 		if(transactionRepo.findAll().isEmpty()) {
 			List<Date> months = new ArrayList<Date>();
 			months.add(service.getFirstDayOfXMonthsBehind(3));
@@ -45,6 +45,14 @@ public class TransactionService {
 			transactionRepo.save(new Transaction("apple", 200.1, months.get(1), ashley));
 		}
 		return transactionRepo.findAll();
+	}
+	
+	public void saveTransaction(Transaction t) {
+		transactionRepo.save(t);
+	}
+	
+	public void deleteTransaction(Transaction t) {
+		transactionRepo.delete(t);
 	}
 
 }

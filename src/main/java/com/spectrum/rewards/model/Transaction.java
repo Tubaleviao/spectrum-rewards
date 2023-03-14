@@ -56,6 +56,12 @@ public class Transaction {
 	}
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", name=" + name + ", value=" + value + ", date=" + date + ", customer="
+				+ customer + "]";
 	}	
 }
 
