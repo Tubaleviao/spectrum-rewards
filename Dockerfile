@@ -2,6 +2,7 @@
 
 FROM node:16-alpine AS rewards-build
 RUN mkdir build
+RUN apt-get install git
 RUN git clone https://github.com/Tubaleviao/spectrum-rewards.git build
 WORKDIR build/src/main/resources/frontend
 RUN npm install && npm run build
