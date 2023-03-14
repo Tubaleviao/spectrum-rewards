@@ -1,16 +1,17 @@
 package com.spectrum.rewards.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class RewardsApplicationController {
 
-	@CrossOrigin
 	@GetMapping("/")
-	public String getUserRewards() {
-		return "Application running";
+	public String getHomePage() {
+		return "index";
 	}
 
 }
